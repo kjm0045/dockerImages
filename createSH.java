@@ -9,12 +9,18 @@ class CreateSH {
         String currentEntry;
         String toWrite;
         Scanner reader = new Scanner(file);
+        ArrayList<String> entries = new ArrayList<String>();
         while(reader.hasNextLine()) {
             currentEntry = reader.nextLine();
-            toWrite = "docker pull " + currentEntry 
-            + "\ndocker tag " + currentEntry + " management-node.management:4000/" + currentEntry
-            + "\ndocker push management-node.management:4000/" + currentEntry + "\n";
-            outputFile.write(toWrite);
+            entries.add(currentEntry);
+        }
+        currentEntry = "";
+        for (int i = 0; i < entries.size(); i++) {
+            outputFile.write("docker pull " + entries.get(i) + "\n");
+        }
+        for (int i = 0; i < entries.size(); i++) {
+            outputFile.write("docker tag " + entries.get(i) + " 50.0.0.10:4000/" + entries.get(i) + "\n");
+            outputFile.write("docker push 50.0.0.10:4000/" + entries.get(i) + "\n");
         }
         outputFile.close();
         reader.close();
